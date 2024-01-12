@@ -18,3 +18,4 @@ The script also creates a text file where it stores all the operations, as well 
 
 ### How to Use
 The script is designed to be executed via the terminal, as shown in the image:
+<img src=".assets/img-comand.PNG"/>
