@@ -1,17 +1,10 @@
-import sys
-import os
+import sys, os, shutil, time, datetime
 from pathlib import Path 
-import shutil
-import time
-import datetime
 
 origin = sys.argv[1]
 replica = sys.argv[2]
 interval = int(sys.argv[3])
-try:
-    logFile = open(sys.argv[4], 'a+')
-except FileNotFoundError:
-    logFile = open(sys.argv[4], 'w+')
+
 
 def getFiles(path): #Function to obtain the files and their respective sizes.
     files = os.listdir(path)
@@ -37,27 +30,32 @@ def delFile(file): #Function to delete the file in the replica folder.
     resp = "File " + file + " deleted - " + datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     return resp
 
-listFilesOrigin = getFiles(origin)
-listFilesReplica = getFiles(replica)
-#print(listFilesOrigin)
-#print(listFilesReplica)
 
-for file in listFilesReplica.keys():
-    if file not in listFilesOrigin.keys():
-        msg = delFile(file)
-        print(msg)
-        logFile.write(msg + "\n")
+while True:
+    try:
+        logFile = open(sys.argv[4], 'a+')
+    except FileNotFoundError:
+        logFile = open(sys.argv[4], 'w+')
 
-for file in listFilesOrigin.keys():
-    if file not in listFilesReplica.keys():
-        msg = moveFile(file,0)
-        print(msg)
-        logFile.write(msg + "\n")
-    elif listFilesOrigin[file] > listFilesReplica[file]:
-        msg = moveFile(file,1)
-        print(msg)
-        logFile.write(msg + "\n")
+    listFilesOrigin = getFiles(origin)
+    listFilesReplica = getFiles(replica)
 
-# while True:
-#     time.sleep(2)
-#     print(sys.argv[0])
+    for file in listFilesReplica.keys():
+        if file not in listFilesOrigin.keys():
+            msg = delFile(file)
+            print(msg)
+            logFile.write(msg + "\n")
+
+    for file in listFilesOrigin.keys():
+        if file not in listFilesReplica.keys():
+            msg = moveFile(file,0)
+            print(msg)
+            logFile.write(msg + "\n")
+        elif listFilesOrigin[file] > listFilesReplica[file]:
+            msg = moveFile(file,1)
+            print(msg)
+            logFile.write(msg + "\n")  
+
+    logFile.close()
+    time.sleep(interval)
+    
