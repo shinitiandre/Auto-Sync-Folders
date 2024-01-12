@@ -30,7 +30,7 @@ def delFile(file): #Function to delete the file in the replica folder.
     resp = "File " + file + " deleted - " + datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     return resp
 
-
+print("Automatic synchronization between folders running.")
 while True:
     try:
         logFile = open(sys.argv[4], 'a+')
