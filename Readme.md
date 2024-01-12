@@ -29,3 +29,7 @@ The script has been developed in an infinite loop, which means that to terminate
 
 ### About the Algorithm
 
+Functions have been developed to create, update and delete files using the libraries `os`, `shutil` and `pathlib`. To find out if the file has been updated or not, we'll look for the date of the last modification in the metadata, and if the date is more recent in the original than in the replica, then it means that the file has been updated.
+I thought about doing this check by file size, but the file could change and end up with the same size.
+I think the algorithm could still be improved, but it's working.
+😄
